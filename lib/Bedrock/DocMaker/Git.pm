@@ -1,0 +1,77 @@
+package Bedrock::DocMaker::Git;
+
+use strict;
+use warnings;
+
+use Cwd qw(getcwd);
+use Data::Dumper;
+use English qw(-no_match_vars);
+use File::Basename qw(basename);
+use Git::Raw;
+use POSIX qw(strftime);
+
+use parent qw(Exporter);
+
+our @EXPORT = qw(fetch_latest_commit);
+
+caller or __PACKAGE__->main;
+
+########################################################################
+sub fetch_latest_commit {
+########################################################################
+  my ( $path, $branch_name ) = @_;
+
+  # Initialize the repo from the current working directory
+  my $repo = Git::Raw::Repository->open( $path // getcwd );
+
+  my $ref;
+
+  if ( !$branch_name ) {
+    $branch_name = 'main';
+    # The third argument '1' tells Git::Raw to look for a REMOTE branch
+    $ref = eval { Git::Raw::Branch->lookup( $repo, $branch_name, 1 ) };
+
+    if ( !$ref ) {
+      $branch_name = 'master';
+      $ref         = eval { Git::Raw::Branch->lookup( $repo, $branch_name, 1 ) };
+    }
+  }
+  else {
+    $ref = eval { Git::Raw::Branch->lookup( $repo, $branch_name, 1 ) };
+  }
+
+  return
+    if !$ref;
+
+  # Resolve the reference to the actual commit object
+  my $commit = $ref->peel('commit');
+
+  # Get the Unix timestamp (epoch) and the message
+  my $epoch   = $commit->time;
+  my $message = $commit->message;
+
+  # Format the date for your records
+  my $date = strftime( '%Y-%m-%d %H:%M:%S', localtime $epoch );
+
+  # Clean up the message (libgit2 often includes trailing newlines)
+  $message =~ s/\n.*//xsm;  # Get only the first line/subject
+  my ($origin) = grep { $_->name eq 'origin' } $repo->remotes;
+
+  return {
+    branch  => $branch_name,
+    date    => $date,
+    message => $message,
+    url     => $origin->url,
+    name    => basename( $origin->url, '.git' ),
+  };
+}
+
+########################################################################
+sub main {
+########################################################################
+
+  print {*STDERR} Dumper( [ commit => fetch_latest_commit() ] );
+  return 0;
+}
+
+1;
