@@ -1,0 +1,9 @@
+\#*
+.\#*
+*.gz
+**/*.pm
+*.tmp
+extra-files
+provides
+resources
+*.pl

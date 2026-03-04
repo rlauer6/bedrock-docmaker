@@ -1,0 +1,32 @@
+project:
+  description: Bedrock::DocMaker
+  author:
+    name: Rob Lauer
+    mailto: rlauer@treasurersbriefcase.com
+pm_module: Bedrock::DocMaker
+min-perl-version: 5.010
+dependencies:
+  requires: requires
+  test_requires: test-requires
+path:
+  pm_module: lib
+  tests: t
+extra-files:
+  - ChangeLog
+  - share:
+      - README.roc
+      - about.md
+      - bedrock-docmaker.mk
+      - style.css
+      - bedrock-docmaker.yml
+      - index.md
+      - index.roc
+resources:
+  homepage: http://github.com/rlauer6/bedrock-docmaker.git
+  bugtracker:
+    web: http://github.com/rlauer6/bedrock-docmaker/issues
+    mailto: rlauer@treasurersbriefcase.com
+  repository:
+    url: git://github.com/rlauer6/bedrock-docmaker.git
+    web: http://github.com/rlauer6/bedrock-docmaker.git
+    type: 'git'

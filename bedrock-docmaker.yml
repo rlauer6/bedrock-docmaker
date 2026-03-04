@@ -1,0 +1,10 @@
+---
+component: Bedrock docmaker
+last_updated: Sat Feb 28 06:18:16 2026
+log-level: info
+profile: localstack
+s3:
+  bucket: test-bucket2
+  dns_bucket_names: false
+  host: localhost:4566
+  secure: false

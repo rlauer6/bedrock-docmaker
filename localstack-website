@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#-*- mode: sh; -*-
+
+bucket_name="${1:-test-bucket}"
+policy=$(mktemp)
+
+trap 'rm -f "$policy"' EXIT INT TERM HUP
+
+cat >$policy <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::test-bucket2/*"
+        }
+    ]
+}
+EOF
+
+aws s3api put-public-access-block \
+    --bucket $bucket_name --endpoint-url http://localhost:4566 \
+    --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+
+aws s3api put-bucket-website \
+    --bucket $bucket_name --endpoint-url http://localhost:4566 \
+    --website-configuration '{"IndexDocument": {"Suffix": "index.html"}, "ErrorDocument": {"Key": "error.html"}}'
+
+aws s3api put-bucket-policy --bucket $bucket_name --endpoint-url http://localhost:4566 --policy file://$policy

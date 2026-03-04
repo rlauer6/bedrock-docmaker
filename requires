@@ -1,0 +1,12 @@
+Amazon::Credentials 
+Amazon::S3          
+Bedrock             
+CLI::Simple         
+Carp::Always        
+Data::NestedKey     
+File::ShareDir      
+Git::Raw
+JSON                
+Markdown::Render    
+Readonly            
+YAML                

@@ -56,13 +56,15 @@ sub fetch_latest_commit {
   # Clean up the message (libgit2 often includes trailing newlines)
   $message =~ s/\n.*//xsm;  # Get only the first line/subject
   my ($origin) = grep { $_->name eq 'origin' } $repo->remotes;
+  my $url      = $origin ? $origin->url             : 'no remote origin yet';
+  my $name     = $origin ? basename( $url, '.git' ) : basename(getcwd);
 
   return {
     branch  => $branch_name,
     date    => $date,
     message => $message,
-    url     => $origin->url,
-    name    => basename( $origin->url, '.git' ),
+    url     => $url,
+    name    => $name,
   };
 }
 

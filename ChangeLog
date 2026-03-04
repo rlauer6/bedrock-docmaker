@@ -1,0 +1,25 @@
+Wed Mar  4 15:00:35 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[1.0.0]: BigBang
+	* .gitignore: new
+	* ChangeLog: new
+	* Makefile: new
+	* README.roc: new
+	* VERSION: new
+	* about.md: new
+	* bedrock-docmaker.mk: new
+	* bedrock-docmaker.yml: new
+	* buildspec.yml: new
+	* index.md: new
+	* index.roc: new
+	* lib/Bedrock/DocMaker.pm.in: renamed
+	* lib/Bedrock/DocMaker/Git.pm.in: renamed
+	* localstack-website: new
+	* requires: new
+	* style.css: new
+	* t/00-docmaker.t: new
+	* test-requires: new
+	* version.mk: new
+	* ChangeLog: modified
+
+
